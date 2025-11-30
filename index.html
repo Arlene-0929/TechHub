@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="TechHub - Your destination for cutting-edge gadgets, electronics, and smart devices" />
+    <title>TechHub - Premium Gadgets &amp; Electronics Store</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Poppins:wght@600;700&display=swap');
+
+        html,
+        body {
+            color: hsl(210, 10%, 15%);
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="components.css" />
+</head>
+
+<body class="bg-neutral text-neutral-foreground font-sans antialiased">
+    <!-- Header / Navigation -->
+    <header id="header"
+        class="sticky top-0 z-50 bg-neutral/95 backdrop-blur-sm border-b border-gray-200 transition-all duration-300">
+        <nav class="container mx-auto px-8 lg:px-16" aria-label="Main navigation">
+            <div class="flex items-center justify-between h-16 lg:h-20">
+                <!-- Logo -->
+                <a href="#hero"
+                    class="text-2xl font-heading font-bold text-navbar-text hover:text-primary transition-colors duration-200">
+                    TechHub
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#smartphones"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 py-2 px-3">Smartphones</a>
+                    <a href="#laptops"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 py-2 px-3">Laptops</a>
+                    <a href="#accessories"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 py-2 px-3">Accessories</a>
+                </div>
+
+                <!-- Right Icons -->
+                <div class="flex items-center space-x-6">
+                    <button aria-label="Search"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 p-2">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Auth Buttons (shown when NOT logged in) -->
+                    <div id="auth-buttons" class="hidden items-center space-x-3">
+                        <button id="login-modal-btn"
+                            class="text-navbar-text hover:text-primary transition-colors duration-200 px-4 py-2 font-semibold">
+                            Login
+                        </button>
+                        <button id="signup-modal-btn"
+                            class="bg-primary text-white hover:bg-[hsl(10,60%,33%)] transition-colors duration-200 px-4 py-2 rounded font-semibold">
+                            Sign Up
+                        </button>
+                    </div>
+
+                    <!-- User Icon & Dropdown (shown when logged in) -->
+                    <div id="user-dropdown-container" class="hidden account-btn-container">
+                        <button id="user-icon-btn" aria-label="User menu"
+                            class="text-navbar-text hover:text-primary transition-colors duration-200 p-2">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </button>
+                        <div id="user-dropdown-menu"></div>
+                    </div>
+
+                    <button id="cart-toggle" aria-label="Shopping cart"
+                        class="text-navbar-text hover:text-primary transition-colors duration-200 p-2 relative">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span id="cart-count"
+                            class="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+                    <button id="mobile-menu-toggle" aria-label="Toggle mobile menu"
+                        class="md:hidden text-navbar-text hover:text-primary transition-colors duration-200 p-2">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-neutral border-t border-gray-200 py-4">
+                <a href="#smartphones"
+                    class="block text-navbar-text hover:text-primary transition-colors duration-200 py-3 px-4">Smartphones</a>
+                <a href="#laptops"
+                    class="block text-navbar-text hover:text-primary transition-colors duration-200 py-3 px-4">Laptops</a>
+                <a href="#accessories"
+                    class="block text-navbar-text hover:text-primary transition-colors duration-200 py-3 px-4">Accessories</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Shopping Cart Panel -->
+    <div id="cart-panel"
+        class="fixed top-0 right-0 h-full w-full md:w-96 bg-neutral shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-heading font-bold text-charcoal">
+                    Shopping Cart
+                </h2>
+                <button id="cart-close" aria-label="Close cart"
+                    class="text-charcoal hover:text-primary transition-colors duration-200 p-2">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div id="cart-items" class="flex-1 overflow-y-auto p-6">
+                <p class="text-gray-500 text-center py-8">Your cart is empty</p>
+            </div>
+            <div class="border-t border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-lg font-bold text-charcoal">Total:</span>
+                    <span id="cart-total" class="text-2xl font-heading font-bold text-primary">$0.00</span>
+                </div>
+                <button id="checkout-btn"
+                    class="w-full bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-colors duration-200 py-4 px-6 rounded font-normal text-base">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div id="cart-overlay" class="hidden fixed inset-0 bg-charcoal/40 z-40"></div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-[600px] lg:min-h-[700px] flex items-center bg-gradient-1 overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=1600&h=900&fit=crop"
+                alt="modern tech gadgets and devices" class="w-full h-full object-cover opacity-80" loading="eager" />
+            <div class="absolute inset-0 bg-gradient-to-r from-neutral/95 via-neutral/70 to-transparent"></div>
+        </div>
+        <div class="container mx-auto px-8 lg:px-16 relative z-10">
+            <div class="max-w-2xl py-32">
+                <h1 id="hero-heading"
+                    class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-hero-text mb-6 opacity-0">
+                    Innovation at Your Fingertips.
+                </h1>
+                <p id="hero-subtext" class="text-lg md:text-xl text-charcoal mb-8 opacity-0">
+                    Discover the latest gadgets and electronics that power your digital lifestyle with cutting-edge
+                    technology.
+                </p>
+                <a href="#products" id="hero-cta"
+                    class="inline-block bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-colors duration-200 py-4 px-8 rounded font-normal text-base opacity-0">
+                    Shop Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Section -->
+    <section id="categories" class="py-32 bg-neutral">
+        <div class="container mx-auto px-8 lg:px-16">
+            <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal text-center mb-16">
+                Featured Gadgets
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Smartphones Category -->
+                <a href="#smartphones" id="smartphones"
+                    class="group relative overflow-hidden rounded bg-white hover:shadow-lg transition-all duration-300 block">
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&h=1000&fit=crop"
+                            alt="latest smartphones collection"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+                        <span class="text-2xl font-heading font-bold text-white">Smartphones</span>
+                    </div>
+                </a>
+
+                <!-- Laptops Category -->
+                <a href="#laptops" id="laptops"
+                    class="group relative overflow-hidden rounded bg-white hover:shadow-lg transition-all duration-300 block">
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&h=1000&fit=crop"
+                            alt="modern laptops and computers"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+                        <span class="text-2xl font-heading font-bold text-white">Laptops</span>
+                    </div>
+                </a>
+
+                <!-- Accessories Category -->
+                <a href="#accessories" id="accessories"
+                    class="group relative overflow-hidden rounded bg-white hover:shadow-lg transition-all duration-300 block">
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&h=1000&fit=crop"
+                            alt="tech accessories and gadgets"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+                        <span class="text-2xl font-heading font-bold text-white">Accessories</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Listing Section -->
+    <section id="products" class="py-32 bg-gray-50">
+        <div class="container mx-auto px-8 lg:px-16">
+            <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal text-center mb-16">
+                Featured Gadgets
+            </h2>
+
+            <!-- Filter Bar -->
+            <div class="mb-12 bg-white p-6 rounded border border-gray-200">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <input id="product-search" type="text" placeholder="Search gadgets..."
+                        class="px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary text-charcoal bg-white" />
+                    <select id="category-select"
+                        class="px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary text-charcoal bg-white">
+                        <option>All Categories</option>
+                        <option>Smartphones</option>
+                        <option>Laptops</option>
+                        <option>Tablets</option>
+                        <option>Wearables</option>
+                        <option>Audio</option>
+                        <option>Accessories</option>
+                    </select>
+                    <select id="brand-select"
+                        class="px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary text-charcoal bg-white">
+                        <option>All Brands</option>
+                        <option>Apple</option>
+                        <option>Samsung</option>
+                        <option>Sony</option>
+                        <option>Dell</option>
+                    </select>
+                    <select id="price-select"
+                        class="px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary text-charcoal bg-white">
+                        <option>Price Range</option>
+                        <option>Under $200</option>
+                        <option>$200 - $500</option>
+                        <option>$500 - $1000</option>
+                        <option>Over $1000</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Product Card 1 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-1" data-category="Smartphones" data-brand="Apple" data-price="899.99">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=800&fit=crop"
+                            alt="premium smartphone"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-1" data-product-name="Pro Smartphone X"
+                            data-product-price="899.99"
+                            data-product-image="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=800&fit=crop">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-1" data-product-name="Pro Smartphone X" data-product-price="899.99"
+                            data-product-image="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=800&fit=crop">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Pro Smartphone X
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">$899.99</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-2" data-category="Laptops" data-brand="Dell" data-price="1499.99">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600&h=800&fit=crop"
+                            alt="gaming laptop"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-2" data-product-name="Gaming Laptop Pro"
+                            data-product-price="1499.99"
+                            data-product-image="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600&h=800&fit=crop">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-2" data-product-name="Gaming Laptop Pro"
+                            data-product-price="1499.99"
+                            data-product-image="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600&h=800&fit=crop">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Gaming Laptop Pro
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">$1,499.99</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-3" data-category="Audio" data-brand="Sony" data-price="299.99">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=800&fit=crop"
+                            alt="wireless headphones"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-3" data-product-name="Wireless Headphones"
+                            data-product-price="299.99"
+                            data-product-image="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=800&fit=crop">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-3" data-product-name="Wireless Headphones"
+                            data-product-price="299.99"
+                            data-product-image="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=800&fit=crop">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Wireless Headphones
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">$299.99</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-4" data-category="Wearables" data-brand="Samsung" data-price="449.99">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&h=800&fit=crop"
+                            alt="smartwatch"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-4" data-product-name="Smart Watch Ultra"
+                            data-product-price="449.99"
+                            data-product-image="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&h=800&fit=crop">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-4" data-product-name="Smart Watch Ultra"
+                            data-product-price="449.99"
+                            data-product-image="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&h=800&fit=crop">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Smart Watch Ultra
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">$449.99</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 5 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-5" data-category="Audio" data-brand="Apple" data-price="199.99">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=800&fit=crop"
+                            alt="wireless earbuds"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-5"
+                            data-product-name="Wireless Earbuds Pro" data-product-price="199.99"
+                            data-product-image="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=800&fit=crop">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-5" data-product-name="Wireless Earbuds Pro"
+                            data-product-price="199.99"
+                            data-product-image="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=800&fit=crop">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Wireless Earbuds Pro
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">$199.99</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 6 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-6" data-category="Tablets" data-brand="Samsung" data-price="799.99">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1585790050230-5dd28404f905?w=600&h=800&fit=crop"
+                            alt="tablet device"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-6"
+                            data-product-name="Tablet Pro 12.9&quot;" data-product-price="799.99"
+                            data-product-image="https://images.unsplash.com/photo-1585790050230-5dd28404f905?w=600&h=800&fit=crop">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-6" data-product-name="Tablet Pro 12.9&quot;"
+                            data-product-price="799.99"
+                            data-product-image="https://images.unsplash.com/photo-1585790050230-5dd28404f905?w=600&h=800&fit=crop">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Tablet Pro 12.9"
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">$799.99</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 7 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-7" data-category="Audio" data-brand="Sony" data-price="149.99">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&h=800&fit=crop"
+                            alt="portable speaker"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-7" data-product-name="Portable Speaker"
+                            data-product-price="149.99"
+                            data-product-image="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&h=800&fit=crop">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-7" data-product-name="Portable Speaker" data-product-price="149.99"
+                            data-product-image="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&h=800&fit=crop">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            Portable Speaker
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">$149.99</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 8 -->
+                <div class="product-card group bg-white rounded overflow-hidden border border-gray-200 hover:border-primary transition-all duration-300"
+                    data-product-id="product-8" data-category="Accessories" data-brand="Sony" data-price="349.99">
+                    <div class="aspect-[3/4] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=600&h=800&fit=crop"
+                            alt="4k action camera"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy" />
+                        <button class="favorite-btn" data-product-id="product-8" data-product-name="4K Action Camera"
+                            data-product-price="349.99"
+                            data-product-image="https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=600&h=800&fit=crop">
+                            <svg viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button
+                            class="add-to-cart-quick absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-all duration-200 py-3 px-6 rounded font-normal text-sm opacity-0 group-hover:opacity-100"
+                            data-product-id="product-8" data-product-name="4K Action Camera" data-product-price="349.99"
+                            data-product-image="https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=600&h=800&fit=crop">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-heading font-semibold text-charcoal mb-2">
+                            4K Action Camera
+                        </h3>
+                        <p class="text-2xl font-bold text-primary">$349.99</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust and Safety Section -->
+    <section id="deals" class="py-32 bg-tertiary">
+        <div class="container mx-auto px-8 lg:px-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-6">
+                        <svg width="32" height="32" fill="none" stroke="hsl(0, 0%, 100%)" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-heading font-bold text-tertiary-foreground mb-3">
+                        Free Shipping
+                    </h3>
+                    <p class="text-tertiary-foreground">
+                        Extended warranty on all electronics
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-6">
+                        <svg width="32" height="32" fill="none" stroke="hsl(0, 0%, 100%)" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-heading font-bold text-tertiary-foreground mb-3">
+                        Secure Payments
+                    </h3>
+                    <p class="text-tertiary-foreground">
+                        Your payment information is always protected
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-6">
+                        <svg width="32" height="32" fill="none" stroke="hsl(0, 0%, 100%)" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-heading font-bold text-tertiary-foreground mb-3">
+                        Warranty Protection
+                    </h3>
+                    <p class="text-tertiary-foreground">
+                        Extended warranty on all electronics
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-gray-300 py-16">
+        <div class="container mx-auto px-8 lg:px-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Customer Service -->
+                <div>
+                    <h4 class="text-lg font-heading font-bold text-white mb-6">
+                        Customer Service
+                    </h4>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Contact Us</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Shipping Info</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Returns</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Size Guide</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- About -->
+                <div>
+                    <h4 class="text-lg font-heading font-bold text-white mb-6">
+                        About
+                    </h4>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Our Story</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Sustainability</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Careers</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Press</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h4 class="text-lg font-heading font-bold text-white mb-6">
+                        Legal
+                    </h4>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Privacy Policy</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Terms of Service</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary transition-colors duration-200">Cookie Policy</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-lg font-heading font-bold text-white mb-6">
+                        Stay Connected
+                    </h4>
+                    <p class="text-gray-400 mb-4">
+                        Subscribe to get special offers and updates
+                    </p>
+                    <form class="mb-6">
+                        <input type="email" placeholder="Your email"
+                            class="w-full px-4 py-3 rounded mb-3 bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                        <button type="submit"
+                            class="w-full bg-primary text-primary-foreground hover:bg-[hsl(10,60%,33%)] transition-colors duration-200 py-3 px-6 rounded font-normal text-base">
+                            Subscribe
+                        </button>
+                    </form>
+                    <div class="flex space-x-4">
+                        <a href="#" aria-label="Facebook"
+                            class="text-gray-400 hover:text-primary transition-colors duration-200">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Instagram"
+                            class="text-gray-400 hover:text-primary transition-colors duration-200">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Twitter"
+                            class="text-gray-400 hover:text-primary transition-colors duration-200">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-500">
+                <p>© 2024 TechHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <link rel="stylesheet" href="auth.css">
+    <script src="data-structures.js"></script>
+    <script src="auth.js"></script>
+    <script src="auth-modal.js"></script>
+    <script src="account-panel.js"></script>
+    <script src="variant-modal.js"></script>
+    <script src="cart-manager.js"></script>
+    <script src="favorites.js"></script>
+    <script src="orders.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // GSAP Animations
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero animations
+            gsap.to('#hero-heading', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.3,
+                ease: 'power3.out',
+            });
+
+            gsap.to('#hero-subtext', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.5,
+                ease: 'power3.out',
+            });
+
+            gsap.to('#hero-cta', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.7,
+                ease: 'power3.out',
+            });
+
+            // Section animations on scroll
+            gsap.utils.toArray('section').forEach((section, i) => {
+                if (section.id !== 'hero') {
+                    gsap.from(section, {
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'top 50%',
+                            toggleActions: 'play none none none',
+                        },
+                        opacity: 0,
+                        y: 50,
+                        duration: 1,
+                        ease: 'power3.out',
+                    });
+                }
+            });
+
+            // Mobile menu toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (mobileMenuToggle && mobileMenu) {
+                mobileMenuToggle.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Add to cart with variant selection - wait for variantModal to be initialized
+            setTimeout(() => {
+                document.querySelectorAll('.add-to-cart-quick').forEach((btn) => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        const product = {
+                            id: e.currentTarget.dataset.productId,
+                            name: e.currentTarget.dataset.productName,
+                            price: e.currentTarget.dataset.productPrice,
+                            image: e.currentTarget.dataset.productImage
+                        };
+
+                        if (window.variantModal) {
+                            window.variantModal.open(product);
+                        }
+                    });
+                });
+            }, 100);
+
+            // Sticky header opacity on scroll
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const header = document.getElementById('header');
+
+                if (header) {
+                    if (currentScroll > 100) {
+                        header.style.backgroundColor = 'hsla(30, 20%, 95%, 0.95)';
+                    } else {
+                        header.style.backgroundColor = 'hsla(30, 20%, 95%, 0.95)';
+                    }
+                }
+
+                lastScroll = currentScroll;
+            });
+        });
+    </script>
+
+    <script>
+        // Product grid filtering
+        (function () {
+            const searchInput = document.getElementById('product-search');
+            const categorySelect = document.getElementById('category-select');
+            const brandSelect = document.getElementById('brand-select');
+            const priceSelect = document.getElementById('price-select');
+            const productCards = Array.from(document.querySelectorAll('.product-card'));
+
+            function matchesPrice(price, rangeText) {
+                const p = Number(price);
+                if (rangeText === 'Under $200') return p < 200;
+                if (rangeText === '$200 - $500') return p >= 200 && p <= 500;
+                if (rangeText === '$500 - $1000') return p > 500 && p <= 1000;
+                if (rangeText === 'Over $1000') return p > 1000;
+                return true; // 'Price Range' or unknown -> match all
+            }
+
+            function applyFilters() {
+                const q = (searchInput && searchInput.value || '').trim().toLowerCase();
+                const category = (categorySelect && categorySelect.value) || 'All Categories';
+                const brand = (brandSelect && brandSelect.value) || 'All Brands';
+                const priceRange = (priceSelect && priceSelect.value) || 'Price Range';
+
+                productCards.forEach(card => {
+                    const nameEl = card.querySelector('h3');
+                    const name = nameEl ? nameEl.textContent.trim().toLowerCase() : '';
+                    const cat = (card.dataset.category || '').trim();
+                    const br = (card.dataset.brand || '').trim();
+                    const price = card.dataset.price || '';
+
+                    const matchesQuery = q === '' || name.includes(q);
+                    const matchesCategory = category === 'All Categories' || cat === category;
+                    const matchesBrand = brand === 'All Brands' || br === brand;
+                    const matchesPriceRange = matchesPrice(price, priceRange);
+
+                    if (matchesQuery && matchesCategory && matchesBrand && matchesPriceRange) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            // debounce helper
+            function debounce(fn, wait) {
+                let t;
+                return function (...args) {
+                    clearTimeout(t);
+                    t = setTimeout(() => fn.apply(this, args), wait);
+                };
+            }
+
+            if (searchInput) searchInput.addEventListener('input', debounce(applyFilters, 150));
+            if (categorySelect) categorySelect.addEventListener('change', applyFilters);
+            if (brandSelect) brandSelect.addEventListener('change', applyFilters);
+            if (priceSelect) priceSelect.addEventListener('change', applyFilters);
+
+            // initial apply
+            applyFilters();
+        })();
+    </script>
+</body>
+
+</html>
